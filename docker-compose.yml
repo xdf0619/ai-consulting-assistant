@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  api:
+    image: tiangolo/uvicorn-gunicorn-fastapi:python3.9
+    container_name: ai-consulting-api
+    volumes:
+      - ./:/app
+    ports:
+      - "8000:80"
+    environment:
+      - MODULE_NAME=main
+      - VARIABLE_NAME=app
+    depends_on:
+      - vector-db
+
+  vector-db:
+    image: qdrant/qdrant:latest
+    container_name: vector-db
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+volumes:
+  qdrant_data:
